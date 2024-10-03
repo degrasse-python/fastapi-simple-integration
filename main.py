@@ -1,3 +1,5 @@
+
+import os
 import requests
 import json
 from typing import List
@@ -8,8 +10,10 @@ from fastapi import (FastAPI,
 import openmeteo_requests
 from pydantic import BaseModel
 
+BACKEND_URI = os.environ['BACKEND_URI']
+
 # connect to redis
-rd = redis.Redis(host='localhost', port=6379, db=0)
+rd = redis.Redis(host=BACKEND_URI, port=6379, db=0)
 # create api
 app = FastAPI()
 # globals
