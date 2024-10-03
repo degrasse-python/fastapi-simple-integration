@@ -4,7 +4,8 @@ Working example for serving a distributed ML prediction API using Python's FastA
 
 ## Usage
 
-1. Clone this repo using `git clone https://github.com/degrasse-python/fastapi-simple-integration.git`
+1. Clone this repo using 
+`git clone https://github.com/degrasse-python/fastapi-simple-integration.git`
 
 2. Then follow the instructions below to start your simple integration. More development to come!
 
