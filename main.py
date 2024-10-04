@@ -11,15 +11,29 @@ from fastapi import (FastAPI,
 import openmeteo_requests
 from pydantic import BaseModel
 
-BACKEND_URI = os.environ['BACKEND_URI']
-
-# connect to redis
-rd = redis.Redis(host=BACKEND_URI, port=6379, db=0)
-# create api
-app = FastAPI()
 # globals
 URL="https://climate-api.open-meteo.com/v1/climate"
 CLIENT = openmeteo_requests.Client()
+
+BACKEND_URI = os.environ['BACKEND_URI']
+BACKEND_PORT = os.environ['BACKEND_PORT']
+BACKEND_DB = os.environ['BACKEND_DB']
+BACKEND_USER = os.environ['BACKEND_USER']
+BACKEND_PASS = os.environ['BACKEND_PASS']
+
+# connect to redis
+rd = redis.Redis(host=BACKEND_URI, 
+                 port=BACKEND_PORT, 
+                 db=BACKEND_DB,
+                 username="default", # use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+                 password="secret",) # use your Redis password
+                 #ssl=True,
+                 #ssl_certfile="./redis_user.crt",
+                 #ssl_keyfile="./redis_user_private.key",
+                 #ssl_ca_certs="./redis_ca.pem")
+
+# create api
+app = FastAPI()
 
 class NumpyArrayEncoder(JSONEncoder):
     def default(self, obj):

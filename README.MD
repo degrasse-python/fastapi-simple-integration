@@ -49,6 +49,17 @@ python3.12 -m venv ~/fastapi
 source ~/fastapi/bin/activate
 ```
 
+Install Redis-CLI to check connection to your redis endpoint
+```bash
+sudo apt-get install lsb-release curl gpg
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+sudo chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+sudo apt-get update
+sudo apt-get install redis
+# check your redis connectivity
+redis-cli -h redis15.localnet.org -p 6390 PING
+```
 
 2.  Clone this repo using 
 `git clone https://github.com/degrasse-python/fastapi-simple-integration.git`
