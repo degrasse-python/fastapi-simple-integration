@@ -2,7 +2,7 @@
 Working example for serving a distributed ML prediction API using Python's FastAPI and Celery. 
 
 
-## Usage
+## Environment Prep 
 
 1. Follow the instructions below to prep your environment for the API.
 
@@ -45,8 +45,8 @@ python3.12 --version
 sudo apt install pipx
 pipx ensurepath --force
 pipx install poetry
-python3.12 -m venv fastapi
-source fastapi/bin/activate
+python3.12 -m venv ~/fastapi
+source ~/fastapi/bin/activate
 ```
 
 
@@ -60,6 +60,8 @@ cd fastapi-simple-integration
 poetry install
 ```
 
+## Running the application in pre-prod
+
 **Start Services-local:Ubuntu**
 ```bash
 # start the API for handling requests
@@ -71,7 +73,7 @@ celery -A celery_task_app:worker worker -l info
 **Start Services-local:MacOS**
 ```bash
 # start the API for handling requests
-uvicorn main:app --reload
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 # start the celery workers
 celery -A celery_task_app:worker worker -l info
 
