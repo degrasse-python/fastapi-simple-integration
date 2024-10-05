@@ -64,6 +64,7 @@ async def postDailyDewPoint2mMean(weather: Weather):
   cache = rd.get(str(weather))
   if cache:
     print("cache hit")
+    print(str(weather))
     print(json.loads(cache))
     return json.loads(cache)
   else:
@@ -85,7 +86,10 @@ async def postDailyDewPoint2mMean(weather: Weather):
     print(f"Daily Dew Point 2mim Mean {daily_dew_point_2m_mean}")
     print(f"Weather: {str(weather)}")
     encodedNumpyData = json.dumps(daily_dew_point_2m_mean, cls=NumpyArrayEncoder)
-    # TODO: return actual json data that looks decent
-    rd.set(str(weather), encodedNumpyData)
-    return f"Current {encodedNumpyData}"
+    # return json data
+    j_return = {'dew_point_2m_mean': [
+                  {'daily':encodedNumpyData},
+                  ]}
+    rd.set(str(weather), json.dumps(j_return))
+    return j_return
   
