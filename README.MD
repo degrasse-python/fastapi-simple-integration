@@ -12,10 +12,13 @@ On MacOS you should be able to add the exports to your zshrc and open a new term
 * MODEL_PATH: Path to pickled machine learning model
 * BROKER_URI: Message broker to be used by Celery e.g. RabbitMQ
 * BACKEND_URI: Celery backend e.g. Redis
+* BACKEND_DB
+* BACKEND_USER
+* BACKEND_PASS
 
 ```bash
 export PATH=$PATH:/usr/local/sbin
-export BROKER_URI='rabbitmq.host:1989'
+export BROKER_URI='redis_host_address:1989'
 export BACKEND_URI=host_address
 export BACKEND_PORT= 
 export BACKEND_DB= 
@@ -80,6 +83,8 @@ redis-cli -h redis15.localnet.org -p 6390 PING
 cd fastapi-simple-integration
 poetry install
 source bin/activate
+
+sudo mv fastapi_nginx /etc/nginx/sites-enabled/
 ```
 
 ## Running the application in pre-prod
@@ -87,7 +92,7 @@ source bin/activate
 **Start Services-local:Ubuntu**
 ```bash
 # start the API for handling requests
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn main:app --reload
 # start the celery workers
 celery -A celery_task_app:worker worker -l info
 ```
@@ -95,14 +100,9 @@ celery -A celery_task_app:worker worker -l info
 **Start Services-local:MacOS**
 ```bash
 # start the API for handling requests
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn main:app --reload
 # start the celery workers
 celery -A celery_task_app:worker worker -l info
 
 ```
 
-**Set environment variables:**
-On MacOS you should be able to add the exports to your zshrc and open a new terminal for things to work.
-* MODEL_PATH: Path to pickled machine learning model
-* BROKER_URI: Message broker to be used by Celery e.g. RabbitMQ
-* BACKEND_URI: Celery backend e.g. Redis
