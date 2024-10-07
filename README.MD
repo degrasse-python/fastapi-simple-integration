@@ -94,7 +94,7 @@ sudo mv fastapi_nginx /etc/nginx/sites-enabled/
 # start the API for handling requests
 uvicorn main:app --reload
 # start the celery workers
-celery -A celery_task_app:worker worker -l info
+celery -A app:worker worker -l info
 ```
 
 **Start Services-local:MacOS**

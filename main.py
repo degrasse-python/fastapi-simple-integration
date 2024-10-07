@@ -1,4 +1,5 @@
 import os
+import time
 import requests
 import json
 from json import JSONEncoder
@@ -63,9 +64,13 @@ async def postDailyDewPoint2mMean(weather: Weather):
   # check cache
   cache = rd.get(str(weather))
   if cache:
+    start_time = time.time()
     print("cache hit")
     print(str(weather))
     print(json.loads(cache))
+    end_time = time.time()
+    dt = end_time-start_time
+    print(f"Time to fetch cache: {dt}")
     return json.loads(cache)
   else:
     print("cache miss")
@@ -79,6 +84,10 @@ async def postDailyDewPoint2mMean(weather: Weather):
           "models": ["CMCC_CM2_VHR4", "FGOALS_f3_H", "HiRAM_SIT_HR", "MRI_AGCM3_2_S", "EC_Earth3P_HR", "MPI_ESM1_2_XR", "NICAM16_8S"],
           "daily": "dew_point_2m_mean"
         }
+    
+    # record start time
+    start_time = time.time()
+    # get data from API
     responses = CLIENT.weather_api(URL, params=params)
     response = responses[0]
     daily = response.Daily()
@@ -91,5 +100,9 @@ async def postDailyDewPoint2mMean(weather: Weather):
                   {'daily':encodedNumpyData},
                   ]}
     rd.set(str(weather), json.dumps(j_return))
+    
+    # time to fetch from API
+    dt = end_time-start_time
+    print(f"Time to fetch cache: {dt}")
     return j_return
   
