@@ -9,8 +9,11 @@ import numpy
 import redis
 from fastapi import (FastAPI,
                      Request)
+import asyncio
 import openmeteo_requests
 from pydantic import BaseModel
+
+
 
 # globals
 URL="https://climate-api.open-meteo.com/v1/climate"
@@ -62,7 +65,7 @@ async def get_body(weather: Weather):
 @app.post("/weather/dewpoint/")
 async def postDailyDewPoint2mMean(weather: Weather):
   # check cache
-  cache = rd.get(str(weather))
+  cache = await rd.get(str(weather))
   if cache:
     start_time = time.time()
     print("cache hit")
@@ -70,7 +73,7 @@ async def postDailyDewPoint2mMean(weather: Weather):
     print(json.loads(cache))
     end_time = time.time()
     dt = end_time-start_time
-    print(f"Time to fetch cache: {dt}")
+    print(f"Time to fetch cache: {dt} secs")
     return json.loads(cache)
   else:
     print("cache miss")
@@ -100,9 +103,9 @@ async def postDailyDewPoint2mMean(weather: Weather):
                   {'daily':encodedNumpyData},
                   ]}
     rd.set(str(weather), json.dumps(j_return))
-    
+    end_time = time.time()
     # time to fetch from API
     dt = end_time-start_time
-    print(f"Time to fetch cache: {dt}")
+    print(f"Time to fetch from API: {dt} secs")
     return j_return
   
